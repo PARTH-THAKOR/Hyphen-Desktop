@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "458501872917",
+    "project_id": "hyphen-roundrobin",
+    "storage_bucket": "hyphen-roundrobin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458501872917:android:811bbc9ae969c9db1edd1c",
+        "android_client_info": {
+          "package_name": "com.example.hyphen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "458501872917-cee6h8m87jkfggg355hm89mr6bg7nlnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmZzKPhVK0ljZNgAMFBw95nt2UkKGptbg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "458501872917-cee6h8m87jkfggg355hm89mr6bg7nlnd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
