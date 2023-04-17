@@ -718,12 +718,12 @@ class ConsoleGetApiAscendingPage extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.amberAccent),
                   borderRadius: BorderRadius.circular(30.0)),
-              child: const ListTile(
+              child: ListTile(
                 title: Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    "http://localhost:8080/org.developers/hyphen/hello/<chatId>",
-                    style: TextStyle(
+                    "http://localhost:8080/org.roundrobin/hyphen/$projectNameCurrunt/user/<chatId>/asc",
+                    style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.amberAccent),
@@ -769,15 +769,15 @@ class ConsoleGetApiAscendingPage extends StatelessWidget {
                   border: Border.all(color: Colors.amberAccent),
                   borderRadius: BorderRadius.circular(30)),
               child: Column(
-                children: const [
+                children: [
                   Text(
                     "headers = {\n\n"
                     "       'Content-Type': 'application/json',\n"
-                    "       'Password': 'prerna6938269',\n"
-                    "       'UserName': 'developers.hyphen',\n"
+                    "       'Password': '$passwordCurrunt',\n"
+                    "       'UserName': '$projectNameCurrunt',\n"
                     "       'Authorization': 'Bearer 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'\n\n"
                     "}",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.amberAccent),
@@ -824,13 +824,13 @@ class ConsoleGetApiAscendingPage extends StatelessWidget {
                   border: Border.all(color: Colors.amberAccent),
                   borderRadius: BorderRadius.circular(30)),
               child: Column(
-                children: const [
+                children: [
                   Text(
                     "Suppose your ChatId is 87646463864365\n\n\n"
                     "So now your GetUrl is :\n"
-                    "           http://localhost:8080/org.developers/hyphen/hello/87646463864365",
+                    "           http://localhost:8080/org.roundrobin/hyphen/$projectNameCurrunt/user/87646463864365/asc",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.amberAccent),
@@ -985,12 +985,12 @@ class ConsoleGetApiDescendingPage extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.amberAccent),
                   borderRadius: BorderRadius.circular(30.0)),
-              child: const ListTile(
+              child: ListTile(
                 title: Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    "http://localhost:8080/org.developers/hyphen/hello/<chatId>",
-                    style: TextStyle(
+                    "http://localhost:8080/org.roundrobin/hyphen/$projectNameCurrunt/user/<chatId>/desc",
+                    style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.amberAccent),
@@ -1036,15 +1036,15 @@ class ConsoleGetApiDescendingPage extends StatelessWidget {
                   border: Border.all(color: Colors.amberAccent),
                   borderRadius: BorderRadius.circular(30)),
               child: Column(
-                children: const [
+                children: [
                   Text(
                     "headers = {\n\n"
                     "       'Content-Type': 'application/json',\n"
-                    "       'Password': 'prerna6938269',\n"
-                    "       'UserName': 'developers.hyphen',\n"
+                    "       'Password': '$passwordCurrunt',\n"
+                    "       'UserName': '$projectNameCurrunt',\n"
                     "       'Authorization': 'Bearer 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'\n\n"
                     "}",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.amberAccent),
@@ -1091,13 +1091,13 @@ class ConsoleGetApiDescendingPage extends StatelessWidget {
                   border: Border.all(color: Colors.amberAccent),
                   borderRadius: BorderRadius.circular(30)),
               child: Column(
-                children: const [
+                children: [
                   Text(
                     "Suppose your ChatId is 87646463864365\n\n\n"
                     "So now your GetUrl is :\n"
-                    "           http://localhost:8080/org.developers/hyphen/hello/87646463864365",
+                    "           http://localhost:8080/org.roundrobin/hyphen/$projectNameCurrunt/user/87646463864365/desc",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.amberAccent),
@@ -1252,12 +1252,12 @@ class ConsoleGetApiDeveloperPage extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.amberAccent),
                   borderRadius: BorderRadius.circular(30.0)),
-              child: const ListTile(
+              child: ListTile(
                 title: Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    "http://localhost:8080/org.developers/hyphen/hello/<projectName>",
-                    style: TextStyle(
+                    "http://localhost:8080/org.roundrobin/hyphen/dev/$projectNameCurrunt",
+                    style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.amberAccent),
@@ -1303,15 +1303,15 @@ class ConsoleGetApiDeveloperPage extends StatelessWidget {
                   border: Border.all(color: Colors.amberAccent),
                   borderRadius: BorderRadius.circular(30)),
               child: Column(
-                children: const [
+                children: [
                   Text(
                     "headers = {\n\n"
                     "       'Content-Type': 'application/json',\n"
-                    "       'Password': 'prerna6938269',\n"
-                    "       'UserName': 'developers.hyphen',\n"
+                    "       'Password': '$passwordCurrunt',\n"
+                    "       'UserName': '$projectNameCurrunt',\n"
                     "       'Authorization': 'Bearer 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'\n\n"
                     "}",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.amberAccent),
@@ -1356,13 +1356,13 @@ class ConsoleGetApiDeveloperPage extends StatelessWidget {
                   border: Border.all(color: Colors.amberAccent),
                   borderRadius: BorderRadius.circular(30)),
               child: Column(
-                children: const [
+                children: [
                   Text(
-                    "your ProjectName is Hello\n\n\n"
+                    "your ProjectName is $projectNameCurrunt\n\n\n"
                     "your Project GetUrl is :\n"
-                    "           http://localhost:8080/org.developers/hyphen/hello/Hello",
+                    "           http://localhost:8080/org.roundrobin/hyphen/dev/$projectNameCurrunt",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.amberAccent),
