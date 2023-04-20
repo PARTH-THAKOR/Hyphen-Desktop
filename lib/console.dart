@@ -1,9 +1,13 @@
 // CONSOLE ACTIVITY
 
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hyphen/jsonmodel.dart';
 import 'package:hyphen/loginpage.dart';
 import 'package:hyphen/projectpage.dart';
+import 'package:http/http.dart' as http;
 
 String buttonmode = "get";
 String projectNameCurrunt = "";
@@ -352,7 +356,7 @@ class _ConsoleApiUrlPageGetState extends State<ConsoleApiUrlPageGet>
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFF414141),
-        floatingActionButton: const ConsoleDataApiPageButton(),
+        floatingActionButton: const ConsoleUserDataPageButton(),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
@@ -433,7 +437,7 @@ class _ConsoleApiUrlPagePostState extends State<ConsoleApiUrlPagePost>
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFF414141),
-        floatingActionButton: const ConsoleDataApiPageButton(),
+        floatingActionButton: const ConsoleUserDataPageButton(),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
@@ -536,7 +540,7 @@ class _ConsoleApiUrlPageDeleteState extends State<ConsoleApiUrlPageDelete>
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFF414141),
-        floatingActionButton: const ConsoleDataApiPageButton(),
+        floatingActionButton: const ConsoleUserDataPageButton(),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
@@ -552,8 +556,8 @@ class _ConsoleApiUrlPageDeleteState extends State<ConsoleApiUrlPageDelete>
   }
 }
 
-class ConsoleDataApiPageButton extends StatelessWidget {
-  const ConsoleDataApiPageButton({
+class ConsoleUserDataPageButton extends StatelessWidget {
+  const ConsoleUserDataPageButton({
     Key? key,
   }) : super(key: key);
 
@@ -580,117 +584,186 @@ class ConsoleDataApiPageButton extends StatelessWidget {
   }
 }
 
-class ConsoleDataApiPage extends StatelessWidget {
+class ConsoleDataApiPage extends StatefulWidget {
   const ConsoleDataApiPage({Key? key}) : super(key: key);
+
+  @override
+  State<ConsoleDataApiPage> createState() => _ConsoleDataApiPageState();
+}
+
+class _ConsoleDataApiPageState extends State<ConsoleDataApiPage> {
+  List<Jsonmodel> userDataList = [];
+
+  Future<List<Jsonmodel>> getUserData() async {
+    final responce = await http.get(
+        Uri.parse(
+            "http://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Password': passwordCurrunt,
+          'UserName': projectNameCurrunt,
+          'Authorization':
+              'Bearer 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'
+        });
+    var data = jsonDecode(responce.body.toString());
+    if (responce.statusCode == 200) {
+      for (Map i in data) {
+        if (!userDataList.contains(Jsonmodel.fromJson(i))) {
+          userDataList.add(Jsonmodel.fromJson(i));
+        }
+      }
+    }
+    return userDataList;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF414141),
-        floatingActionButton: const ConsoleDataApiPageButton(),
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: 150,
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Data of your project on our SERVER",
-                style: GoogleFonts.orbitron(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 25),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 10, right: 20, left: 20),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  backgroundColor: Colors.transparent,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25),
-                                      side: const BorderSide(
-                                          color: Colors.pinkAccent, width: 2)),
-                                  title: Text(
-                                    "Delete all Data",
+      backgroundColor: const Color(0xFF414141),
+      floatingActionButton: const ConsoleUserDataPageButton(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 150,
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Data of your project on our SERVER",
+              style: GoogleFonts.orbitron(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 25),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 10, right: 20, left: 20),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                    side: const BorderSide(
+                                        color: Colors.pinkAccent, width: 2)),
+                                title: Text(
+                                  "Delete all Data",
+                                  style: GoogleFonts.orbitron(
+                                      fontSize: 35,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.cyanAccent),
+                                ),
+                                content: Text(
+                                    "Do you want to delete all data ?",
                                     style: GoogleFonts.orbitron(
-                                        fontSize: 35,
+                                        fontSize: 25,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.cyanAccent),
-                                  ),
-                                  content: Text(
-                                      "Do you want to delete all data ?",
-                                      style: GoogleFonts.orbitron(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white)),
-                                  actions: [
-                                    ElevatedButton(
-                                      onPressed: () async {},
-                                      style: ButtonStyle(
-                                          overlayColor:
-                                              const MaterialStatePropertyAll(
-                                                  Colors.pink),
-                                          backgroundColor:
-                                              const MaterialStatePropertyAll(
-                                                  Colors.cyanAccent),
-                                          shape: MaterialStateProperty.all(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          27)))),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(15.0),
-                                        child: Text(
-                                          "Delete",
-                                          style: GoogleFonts.orbitron(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20,
-                                              color: Colors.black),
-                                        ),
+                                        color: Colors.white)),
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ButtonStyle(
+                                        overlayColor:
+                                            const MaterialStatePropertyAll(
+                                                Colors.pink),
+                                        backgroundColor:
+                                            const MaterialStatePropertyAll(
+                                                Colors.cyanAccent),
+                                        shape: MaterialStateProperty.all(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        27)))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Text(
+                                        "Delete",
+                                        style: GoogleFonts.orbitron(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            color: Colors.black),
                                       ),
                                     ),
-                                  ],
-                                );
-                              });
-                        },
-                        style: ButtonStyle(
-                            overlayColor:
-                                const MaterialStatePropertyAll(Colors.pink),
-                            backgroundColor: const MaterialStatePropertyAll(
-                                Colors.cyanAccent),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(27)))),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text("Delete all Data",
-                              style: GoogleFonts.orbitron(
-                                  color: Colors.black,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold)),
-                        ),
+                                  ),
+                                ],
+                              );
+                            });
+                      },
+                      style: ButtonStyle(
+                          overlayColor:
+                              const MaterialStatePropertyAll(Colors.pink),
+                          backgroundColor:
+                              const MaterialStatePropertyAll(Colors.cyanAccent),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(27)))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text("Delete all Data",
+                            style: GoogleFonts.orbitron(
+                                color: Colors.black,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),
-                ],
-              )
-            ],
-          ),
+                ),
+              ],
+            )
+          ],
         ),
-        body: ListView(
-          children: const [],
-        ));
+      ),
+      body: Container(
+        margin: const EdgeInsets.only(left: 70),
+        child: Column(
+          children: [
+            Expanded(
+              child: FutureBuilder(
+                  future: getUserData(),
+                  builder: (context, AsyncSnapshot<List<Jsonmodel>> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.cyanAccent,
+                      ));
+                    } else {
+                      return ListView.builder(
+                          itemCount: userDataList.length,
+                          itemBuilder: (context, index) {
+                            return Text(
+                              "{\n"
+                              "\t\t\t'id' : ${snapshot.data![index].id.toString()}\n"
+                              "\t\t\t'projectName': ${snapshot.data![index].projectName.toString()}\n"
+                              "\t\t\tchatId : ${snapshot.data![index].chatId.toString()}\n"
+                              "\t\t\tsendId : ${snapshot.data![index].sendId.toString()}\n"
+                              "\t\t\tdeleteId : ${snapshot.data![index].deleteId.toString()}\n"
+                              "\t\t\ttime : ${snapshot.data![index].time.toString()}\n"
+                              "\t\t\tmessage : ${snapshot.data![index].message.toString()}\n"
+                              '},\n',
+                              style: const TextStyle(
+                                  color: Colors.lightBlueAccent,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            );
+                          });
+                    }
+                  }),
+            ),
+            const SizedBox(
+              height: 20,
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -722,7 +795,7 @@ class ConsoleGetApiAscendingPage extends StatelessWidget {
                 title: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    "http://localhost:8080/org.roundrobin/hyphen/$projectNameCurrunt/user/<chatId>/asc",
+                    "http://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/<chatId>/asc",
                     style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -828,7 +901,7 @@ class ConsoleGetApiAscendingPage extends StatelessWidget {
                   Text(
                     "Suppose your ChatId is 87646463864365\n\n\n"
                     "So now your GetUrl is :\n"
-                    "           http://localhost:8080/org.roundrobin/hyphen/$projectNameCurrunt/user/87646463864365/asc",
+                    "           http://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/87646463864365/asc",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontSize: 18,
@@ -989,7 +1062,7 @@ class ConsoleGetApiDescendingPage extends StatelessWidget {
                 title: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    "http://localhost:8080/org.roundrobin/hyphen/$projectNameCurrunt/user/<chatId>/desc",
+                    "http://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/<chatId>/desc",
                     style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -1095,7 +1168,7 @@ class ConsoleGetApiDescendingPage extends StatelessWidget {
                   Text(
                     "Suppose your ChatId is 87646463864365\n\n\n"
                     "So now your GetUrl is :\n"
-                    "           http://localhost:8080/org.roundrobin/hyphen/$projectNameCurrunt/user/87646463864365/desc",
+                    "           http://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/87646463864365/desc",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontSize: 18,
@@ -1256,7 +1329,7 @@ class ConsoleGetApiDeveloperPage extends StatelessWidget {
                 title: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    "http://localhost:8080/org.roundrobin/hyphen/dev/$projectNameCurrunt",
+                    "http://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt",
                     style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -1360,7 +1433,7 @@ class ConsoleGetApiDeveloperPage extends StatelessWidget {
                   Text(
                     "your ProjectName is $projectNameCurrunt\n\n\n"
                     "your Project GetUrl is :\n"
-                    "           http://localhost:8080/org.roundrobin/hyphen/dev/$projectNameCurrunt",
+                    "           http://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontSize: 18,
@@ -1425,6 +1498,58 @@ class ConsoleGetApiDeveloperPage extends StatelessWidget {
               height: 70,
             )
           ],
+        )
+      ],
+    );
+  }
+}
+
+class ConsoleJsonPage extends StatefulWidget {
+  const ConsoleJsonPage({Key? key}) : super(key: key);
+
+  @override
+  State<ConsoleJsonPage> createState() => _ConsoleJsonPageState();
+}
+
+class _ConsoleJsonPageState extends State<ConsoleJsonPage> {
+  List<Jsonmodel> userDataList = [];
+
+  getUserData() async {
+    final responce = await http.get(
+        Uri.parse(
+            "http://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Password': passwordCurrunt,
+          'UserName': projectNameCurrunt,
+          'Authorization':
+              'Bearer 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'
+        });
+    var data = jsonDecode(responce.body.toString());
+    if (responce.statusCode == 200) {
+      for (var i in data) {
+        userDataList.add(Jsonmodel.fromJson(i));
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: FutureBuilder(
+              future: getUserData(),
+              builder: (context, snapshot) {
+                return ListView.builder(
+                    itemCount: userDataList.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(userDataList[index].id.toString()),
+                        subtitle: Text(userDataList[index].message.toString()),
+                      );
+                    });
+              }),
         )
       ],
     );

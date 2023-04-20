@@ -43,6 +43,7 @@ dependencies:
   firedart:
   motion_toast: ^2.6.6
   shared_preferences:
+  http:
 
 dev_dependencies:
   flutter_test:
