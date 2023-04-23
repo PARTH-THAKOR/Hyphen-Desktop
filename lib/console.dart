@@ -8,6 +8,8 @@ import 'package:hyphen/jsonmodel.dart';
 import 'package:hyphen/loginpage.dart';
 import 'package:hyphen/projectpage.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 String buttonmode = "get";
 String projectNameCurrunt = "";
@@ -584,6 +586,23 @@ class ConsoleUserDataPageButton extends StatelessWidget {
   }
 }
 
+class RobotAnimation2 extends StatelessWidget {
+  const RobotAnimation2({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+            margin: const EdgeInsets.only(top: 50),
+            child: Lottie.network(
+                "https://assets3.lottiefiles.com/packages/lf20_SI8fvW.json",
+                fit: BoxFit.cover))
+      ],
+    );
+  }
+}
+
 class ConsoleDataApiPage extends StatefulWidget {
   const ConsoleDataApiPage({Key? key}) : super(key: key);
 
@@ -597,7 +616,7 @@ class _ConsoleDataApiPageState extends State<ConsoleDataApiPage> {
   Future<List<Jsonmodel>> getUserData() async {
     final responce = await http.get(
         Uri.parse(
-            "http://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt"),
+            "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt"),
         headers: {
           'Content-Type': 'application/json',
           'Password': passwordCurrunt,
@@ -614,6 +633,37 @@ class _ConsoleDataApiPageState extends State<ConsoleDataApiPage> {
       }
     }
     return userDataList;
+  }
+
+  deleteUserData() async {
+    final responce = await http.delete(
+        Uri.parse(
+            "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Password': passwordCurrunt,
+          'UserName': projectNameCurrunt,
+          'Authorization':
+              'Bearer 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'
+        });
+    if (responce.statusCode == 204) {
+      setState(() {
+        Navigator.pop(context);
+        userDataList.clear();
+        MotionToast.success(
+                title: const Text("Success"),
+                description: const Text("All data deleted"))
+            .show(context);
+      });
+    } else {
+      setState(() {
+        Navigator.pop(context);
+        MotionToast.error(
+                title: const Text("Error"),
+                description: const Text("Error occured"))
+            .show(context);
+      });
+    }
   }
 
   @override
@@ -669,7 +719,9 @@ class _ConsoleDataApiPageState extends State<ConsoleDataApiPage> {
                                         color: Colors.white)),
                                 actions: [
                                   ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      deleteUserData();
+                                    },
                                     style: ButtonStyle(
                                         overlayColor:
                                             const MaterialStatePropertyAll(
@@ -734,6 +786,28 @@ class _ConsoleDataApiPageState extends State<ConsoleDataApiPage> {
                           child: CircularProgressIndicator(
                         color: Colors.cyanAccent,
                       ));
+                    } else if (snapshot.data!.isEmpty) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const SizedBox(
+                                height: 40,
+                              ),
+                              Text(
+                                "No Data",
+                                style: GoogleFonts.orbitron(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    color: Colors.white),
+                              ),
+                              const RobotAnimation2()
+                            ],
+                          ),
+                        ],
+                      );
                     } else {
                       return ListView.builder(
                           itemCount: userDataList.length,
@@ -1498,58 +1572,6 @@ class ConsoleGetApiDeveloperPage extends StatelessWidget {
               height: 70,
             )
           ],
-        )
-      ],
-    );
-  }
-}
-
-class ConsoleJsonPage extends StatefulWidget {
-  const ConsoleJsonPage({Key? key}) : super(key: key);
-
-  @override
-  State<ConsoleJsonPage> createState() => _ConsoleJsonPageState();
-}
-
-class _ConsoleJsonPageState extends State<ConsoleJsonPage> {
-  List<Jsonmodel> userDataList = [];
-
-  getUserData() async {
-    final responce = await http.get(
-        Uri.parse(
-            "http://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Password': passwordCurrunt,
-          'UserName': projectNameCurrunt,
-          'Authorization':
-              'Bearer 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'
-        });
-    var data = jsonDecode(responce.body.toString());
-    if (responce.statusCode == 200) {
-      for (var i in data) {
-        userDataList.add(Jsonmodel.fromJson(i));
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: FutureBuilder(
-              future: getUserData(),
-              builder: (context, snapshot) {
-                return ListView.builder(
-                    itemCount: userDataList.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(userDataList[index].id.toString()),
-                        subtitle: Text(userDataList[index].message.toString()),
-                      );
-                    });
-              }),
         )
       ],
     );
