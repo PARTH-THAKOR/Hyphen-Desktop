@@ -20,6 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     getLogInInfo();
+    projectList();
     super.initState();
   }
 

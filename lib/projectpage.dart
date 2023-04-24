@@ -11,6 +11,8 @@ import 'package:motion_toast/motion_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
+List<String> projectNameList = [];
+
 class ProjectPage extends StatefulWidget {
   const ProjectPage({Key? key}) : super(key: key);
 
@@ -22,6 +24,7 @@ class _ProjectPageState extends State<ProjectPage> {
   @override
   void initState() {
     windowManager.setFullScreen(true);
+    projectList();
     super.initState();
   }
 
@@ -36,10 +39,104 @@ class _ProjectPageState extends State<ProjectPage> {
             Row(
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: const RobotAnimation(),
-                ),
+                    height: MediaQuery.of(context).size.height,
+                    width: (projectNameList.isEmpty)
+                        ? MediaQuery.of(context).size.width / 2
+                        : MediaQuery.of(context).size.width / 4,
+                    child: Center(
+                        child: (projectNameList.isEmpty)
+                            ? const RobotAnimation()
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: const [
+                                  RobotAnimation2(),
+                                ],
+                              ))),
+                (projectNameList.isEmpty)
+                    ? Container()
+                    : Column(
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: Center(
+                              child: Text(
+                                "Your Projects",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.orbitron(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.lime),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.9,
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: ListView.builder(
+                                itemCount: projectNameList.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    margin: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xFF414141),
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
+                                    child: ListTile(
+                                      tileColor: Colors.transparent,
+                                      title: Text(
+                                        projectNameList[index].toString(),
+                                        style: GoogleFonts.orbitron(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            color: Colors.white),
+                                      ),
+                                      trailing: IconButton(
+                                        icon: const Icon(
+                                          Icons.delete,
+                                          color: Colors.cyanAccent,
+                                        ),
+                                        onPressed: () async {
+                                          await deleteProject(
+                                            projectNameList[index].toString(),
+                                          );
+                                          setState(() {
+                                            projectNameList.remove(
+                                                projectNameList[index]
+                                                    .toString());
+                                            MotionToast.success(
+                                                    title:
+                                                        const Text("Success"),
+                                                    description: const Text(
+                                                        "Project Deleted"))
+                                                .show(context);
+                                          });
+                                        },
+                                        color: Colors.black,
+                                      ),
+                                      onTap: () async {
+                                        SharedPreferences sharedPreferences =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        await passwordFinder(
+                                            projectNameList[index].toString());
+                                        var collection = Firestore.instance
+                                            .collection(
+                                                "${sharedPreferences.getString("user")}project");
+                                        collection.get().then((value) =>
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const Console())));
+                                      },
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width / 2,
@@ -52,16 +149,22 @@ class _ProjectPageState extends State<ProjectPage> {
   }
 }
 
-class ApplicationBackButton extends StatelessWidget {
+class ApplicationBackButton extends StatefulWidget {
   const ApplicationBackButton({Key? key}) : super(key: key);
 
+  @override
+  State<ApplicationBackButton> createState() => _ApplicationBackButtonState();
+}
+
+class _ApplicationBackButtonState extends State<ApplicationBackButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(left: 20, top: 10),
       child: FloatingActionButton.small(
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const ProjectPage()));
         },
         backgroundColor: Colors.cyanAccent,
         child: const Icon(
@@ -372,6 +475,15 @@ class _ProjectCreatePageFormState extends State<ProjectCreatePageForm> {
                   setState(() {
                     isLoading = false;
                   });
+                } else if (projectName.text.toString().length > 10) {
+                  collection.get().then((value) => MotionToast.error(
+                          title: const Text("Error"),
+                          description: const Text(
+                              "Project Name must be less then 10 characters"))
+                      .show(context));
+                  setState(() {
+                    isLoading = false;
+                  });
                 } else {
                   for (int i = 0; i < list.length; i++) {
                     if (list[i]['projectName'].toString() ==
@@ -389,13 +501,17 @@ class _ProjectCreatePageFormState extends State<ProjectCreatePageForm> {
                     }
                   }
                   if (newUser) {
+                    String docId =
+                        DateTime.now().microsecondsSinceEpoch.toString();
                     String pass = passWord();
-                    await collection.add({
+                    await collection.document(docId).set({
                       'projectName': projectName.text.toString(),
-                      'password': pass
+                      'password': pass,
+                      'docId': docId
                     }).then((value) {
                       projectNameCurrunt = projectName.text.toString();
                       passwordCurrunt = pass;
+                      projectNameList.add(projectName.text.toString());
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -463,5 +579,42 @@ class _ProjectCreatePageFormState extends State<ProjectCreatePageForm> {
                     fontWeight: FontWeight.bold))),
       ],
     );
+  }
+}
+
+projectList() async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  var collection = Firestore.instance
+      .collection("${sharedPreferences.getString("user")}project");
+  final data = await collection.get();
+  for (int i = 0; i < data.length; i++) {
+    if (!projectNameList.contains(data[i]['projectName'].toString())) {
+      projectNameList.add(data[i]['projectName'].toString());
+    }
+  }
+}
+
+passwordFinder(String projectName) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  var collection = Firestore.instance
+      .collection("${sharedPreferences.getString("user")}project");
+  final data = await collection.get();
+  for (int i = 0; i < data.length; i++) {
+    if (data[i]['projectName'].toString() == projectName) {
+      passwordCurrunt = data[i]['password'].toString();
+      projectNameCurrunt = projectName;
+    }
+  }
+}
+
+deleteProject(String projectName) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  var collection = Firestore.instance
+      .collection("${sharedPreferences.getString("user")}project");
+  final data = await collection.get();
+  for (int i = 0; i < data.length; i++) {
+    if (data[i]['projectName'].toString() == projectName) {
+      collection.document(data[i]['docId'].toString()).delete();
+    }
   }
 }
