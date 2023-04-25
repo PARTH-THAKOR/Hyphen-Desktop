@@ -32,7 +32,16 @@ class _ProjectPageState extends State<ProjectPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
-        floatingActionButton: const ApplicationCloseButton(),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: const [
+            LogOutButton(),
+            SizedBox(
+              width: 20,
+            ),
+            ApplicationCloseButton(),
+          ],
+        ),
         backgroundColor: const Color(0xFF313131),
         body: ListView(
           children: [
@@ -97,21 +106,97 @@ class _ProjectPageState extends State<ProjectPage> {
                                           Icons.delete,
                                           color: Colors.cyanAccent,
                                         ),
-                                        onPressed: () async {
-                                          await deleteProject(
-                                            projectNameList[index].toString(),
-                                          );
-                                          setState(() {
-                                            projectNameList.remove(
-                                                projectNameList[index]
-                                                    .toString());
-                                            MotionToast.success(
-                                                    title:
-                                                        const Text("Success"),
-                                                    description: const Text(
-                                                        "Project Deleted"))
-                                                .show(context);
-                                          });
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              25),
+                                                      side: const BorderSide(
+                                                          color:
+                                                              Colors.pinkAccent,
+                                                          width: 2)),
+                                                  title: Text(
+                                                    "Delete Project",
+                                                    style: GoogleFonts.orbitron(
+                                                        fontSize: 35,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            Colors.cyanAccent),
+                                                  ),
+                                                  content: Text(
+                                                      "Do you want to delete Project ${projectNameList[index].toString()}?",
+                                                      style:
+                                                          GoogleFonts.orbitron(
+                                                              fontSize: 25,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Colors
+                                                                  .white)),
+                                                  actions: [
+                                                    ElevatedButton(
+                                                      onPressed: () async {
+                                                        await deleteProject(
+                                                          projectNameList[index]
+                                                              .toString(),
+                                                        );
+                                                        setState(() {
+                                                          projectNameList.remove(
+                                                              projectNameList[
+                                                                      index]
+                                                                  .toString());
+                                                          Navigator.pop(
+                                                              context);
+                                                          MotionToast.success(
+                                                                  title: const Text(
+                                                                      "Success"),
+                                                                  description:
+                                                                      const Text(
+                                                                          "Project Deleted"))
+                                                              .show(context);
+                                                        });
+                                                      },
+                                                      style: ButtonStyle(
+                                                          overlayColor:
+                                                              const MaterialStatePropertyAll(
+                                                                  Colors.pink),
+                                                          backgroundColor:
+                                                              const MaterialStatePropertyAll(
+                                                                  Colors
+                                                                      .cyanAccent),
+                                                          shape: MaterialStateProperty.all(
+                                                              RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              27)))),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(15.0),
+                                                        child: Text(
+                                                          "Delete",
+                                                          style: GoogleFonts
+                                                              .orbitron(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 20,
+                                                                  color: Colors
+                                                                      .black),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              });
                                         },
                                         color: Colors.black,
                                       ),
@@ -146,6 +231,90 @@ class _ProjectPageState extends State<ProjectPage> {
             )
           ],
         ));
+  }
+}
+
+class LogOutButton extends StatelessWidget {
+  const LogOutButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 15),
+      child: ElevatedButton(
+        style: ButtonStyle(
+            overlayColor: const MaterialStatePropertyAll(Colors.pink),
+            backgroundColor: const MaterialStatePropertyAll(Colors.cyanAccent),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30)))),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                      side:
+                          const BorderSide(color: Colors.pinkAccent, width: 2)),
+                  title: Text(
+                    "LogOut",
+                    style: GoogleFonts.orbitron(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.cyanAccent),
+                  ),
+                  content: Text("Do you want to LogOut ?",
+                      style: GoogleFonts.orbitron(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white)),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        SharedPreferences sharedPreferences =
+                            await SharedPreferences.getInstance();
+                        sharedPreferences.remove("user").then((value) =>
+                            sharedPreferences.setBool("dm5", false).then(
+                                (value) => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginPage()))));
+                      },
+                      style: ButtonStyle(
+                          overlayColor:
+                              const MaterialStatePropertyAll(Colors.pink),
+                          backgroundColor:
+                              const MaterialStatePropertyAll(Colors.cyanAccent),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(27)))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          "LogOut",
+                          style: GoogleFonts.orbitron(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              });
+        },
+        child: Container(
+          margin: const EdgeInsets.all(7),
+          child: Text(
+            "LogOut",
+            style: GoogleFonts.orbitron(
+                fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -336,7 +505,7 @@ class _ProjectOpenFormState extends State<ProjectOpenForm> {
                       borderRadius: BorderRadius.circular(27)))),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Text("New Project",
+                child: Text("Create Project",
                     style: GoogleFonts.orbitron(
                         color: Colors.black,
                         fontSize: 20,

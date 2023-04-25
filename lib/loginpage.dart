@@ -219,7 +219,9 @@ class _LoginPageFormState extends State<LoginPageForm> {
                         collection.get().then((value) async {
                           SharedPreferences sharedPreferences =
                               await SharedPreferences.getInstance();
-                          sharedPreferences.setString("user", userName.text.toString());
+                          sharedPreferences.setString(
+                              "user", userName.text.toString());
+                          await projectList();
                           sharedPreferences.setBool("dm5", true).then((value) =>
                               Navigator.push(
                                   context,
@@ -534,7 +536,8 @@ class _SignUpPageFormState extends State<SignUpPageForm> {
                     }).then((value) async {
                       SharedPreferences sharedPreferences =
                           await SharedPreferences.getInstance();
-                      sharedPreferences.setString("user", userName.text.toString());
+                      sharedPreferences.setString(
+                          "user", userName.text.toString());
                       sharedPreferences.setBool("dm5", true).then((value) =>
                           Navigator.push(
                               context,
