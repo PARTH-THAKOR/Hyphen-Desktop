@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hyphen/jsonmodel.dart';
 import 'package:hyphen/loginpage.dart';
@@ -101,22 +102,44 @@ class ConsoleInfoSection extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(10),
-                      child: Text(
-                        "ProjectName: $projectNameCurrunt",
-                        style: GoogleFonts.orbitron(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                      child: GestureDetector(
+                        onLongPress: () {
+                          Clipboard.setData(
+                                  ClipboardData(text: projectNameCurrunt))
+                              .then((value) => MotionToast.success(
+                                      title: const Text("Success"),
+                                      description: const Text(
+                                          "ProjectName copied on clipboard"))
+                                  .show(context));
+                        },
+                        child: Text(
+                          "ProjectName: $projectNameCurrunt",
+                          style: GoogleFonts.orbitron(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
                       ),
                     ),
                     Container(
                       padding: const EdgeInsets.all(10),
-                      child: Text(
-                        "Password🔒: $passwordCurrunt",
-                        style: GoogleFonts.orbitron(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                      child: GestureDetector(
+                        onLongPress: () {
+                          Clipboard.setData(
+                                  ClipboardData(text: passwordCurrunt))
+                              .then((value) => MotionToast.success(
+                                      title: const Text("Success"),
+                                      description: const Text(
+                                          "Password copied on clipboard"))
+                                  .show(context));
+                        },
+                        child: Text(
+                          "Password🔒: $passwordCurrunt",
+                          style: GoogleFonts.orbitron(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
                       ),
                     ),
                   ],
@@ -127,8 +150,18 @@ class ConsoleInfoSection extends StatelessWidget {
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.27,
-          height: MediaQuery.of(context).size.height * 0.6,
+          height: MediaQuery.of(context).size.height * 0.55,
           child: const ConsoleApiTypeButtons(),
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.27,
+          height: MediaQuery.of(context).size.height * 0.05,
+          child: Text(
+            "developers.roundrobin",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.orbitron(
+                fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
         ),
       ],
     );
@@ -428,9 +461,11 @@ class _ConsoleApiUrlPagePostState extends State<ConsoleApiUrlPagePost>
     return TabBarView(controller: tabController, children: const [
       Scaffold(
         backgroundColor: Color(0xFF414141),
+        body: ConsolePostApiOnProjectPage(),
       ),
       Scaffold(
         backgroundColor: Color(0xFF414141),
+        body: ConsolePostApiDeveloperPage(),
       ),
     ]);
   }
@@ -525,15 +560,19 @@ class _ConsoleApiUrlPageDeleteState extends State<ConsoleApiUrlPageDelete>
     return TabBarView(controller: tabController, children: const [
       Scaffold(
         backgroundColor: Color(0xFF414141),
+        body: ConsoleDeleteApiByDeleteIdPage(),
       ),
       Scaffold(
         backgroundColor: Color(0xFF414141),
+        body: ConsoleDeleteApiByChatIdPage(),
       ),
       Scaffold(
         backgroundColor: Color(0xFF414141),
+        body: ConsoleDeleteApiBySendIdPage(),
       ),
       Scaffold(
         backgroundColor: Color(0xFF414141),
+        body: ConsoleDeleteApiDeveloperPage(),
       ),
     ]);
   }
@@ -868,13 +907,25 @@ class ConsoleGetApiAscendingPage extends StatelessWidget {
               child: ListTile(
                 title: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                    "http://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/<chatId>/asc",
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.amberAccent),
-                    textAlign: TextAlign.center,
+                  child: GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text:
+                                  "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/<chatId>/asc"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Link copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/<chatId>/asc",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
                   ),
                 ),
               ),
@@ -917,17 +968,33 @@ class ConsoleGetApiAscendingPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30)),
               child: Column(
                 children: [
-                  Text(
-                    "headers = {\n\n"
-                    "       'Content-Type': 'application/json',\n"
-                    "       'Password': '$passwordCurrunt',\n"
-                    "       'UserName': '$projectNameCurrunt',\n"
-                    "       'Authorization': 'Bearer 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'\n\n"
-                    "}",
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.amberAccent),
+                  GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text: "headers = {\n\n"
+                                  "       'Content-Type': 'application/json',\n"
+                                  "       'Password': '$passwordCurrunt',\n"
+                                  "       'UserName': '$projectNameCurrunt',\n"
+                                  "       'Authorization': 'Bearer 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'\n\n"
+                                  "}"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Header copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "headers = {\n\n"
+                      "       'Content-Type': 'application/json',\n"
+                      "       'Password': '$passwordCurrunt',\n"
+                      "       'UserName': '$projectNameCurrunt',\n"
+                      "       'Authorization': 'Bearer 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'\n\n"
+                      "}",
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
                   ),
                 ],
               ),
@@ -975,7 +1042,7 @@ class ConsoleGetApiAscendingPage extends StatelessWidget {
                   Text(
                     "Suppose your ChatId is 87646463864365\n\n\n"
                     "So now your GetUrl is :\n"
-                    "           http://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/87646463864365/asc",
+                    "           https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/87646463864365/asc",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontSize: 18,
@@ -1135,13 +1202,25 @@ class ConsoleGetApiDescendingPage extends StatelessWidget {
               child: ListTile(
                 title: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                    "http://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/<chatId>/desc",
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.amberAccent),
-                    textAlign: TextAlign.center,
+                  child: GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text:
+                                  "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/<chatId>/desc"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Link copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/<chatId>/desc",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
                   ),
                 ),
               ),
@@ -1184,17 +1263,33 @@ class ConsoleGetApiDescendingPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30)),
               child: Column(
                 children: [
-                  Text(
-                    "headers = {\n\n"
-                    "       'Content-Type': 'application/json',\n"
-                    "       'Password': '$passwordCurrunt',\n"
-                    "       'UserName': '$projectNameCurrunt',\n"
-                    "       'Authorization': 'Bearer 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'\n\n"
-                    "}",
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.amberAccent),
+                  GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text: "headers = {\n\n"
+                                  "       'Content-Type': 'application/json',\n"
+                                  "       'Password': '$passwordCurrunt',\n"
+                                  "       'UserName': '$projectNameCurrunt',\n"
+                                  "       'Authorization': 'Bearer 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'\n\n"
+                                  "}"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Header copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "headers = {\n\n"
+                      "       'Content-Type': 'application/json',\n"
+                      "       'Password': '$passwordCurrunt',\n"
+                      "       'UserName': '$projectNameCurrunt',\n"
+                      "       'Authorization': 'Bearer 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'\n\n"
+                      "}",
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
                   ),
                 ],
               ),
@@ -1242,7 +1337,7 @@ class ConsoleGetApiDescendingPage extends StatelessWidget {
                   Text(
                     "Suppose your ChatId is 87646463864365\n\n\n"
                     "So now your GetUrl is :\n"
-                    "           http://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/87646463864365/desc",
+                    "           https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/87646463864365/desc",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontSize: 18,
@@ -1402,13 +1497,232 @@ class ConsoleGetApiDeveloperPage extends StatelessWidget {
               child: ListTile(
                 title: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                    "http://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt",
-                    style: const TextStyle(
-                        fontSize: 20,
+                  child: GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text:
+                                  "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Link copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.cyanAccent)),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "This Api is for developer of project, "
+                          "It is used to get all data of project",
+                          style: GoogleFonts.orbitron(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 1:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "First you need to authenticate the API\n"
+                        "So set header parameter of this API in your code like this",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text: "headers = {\n\n"
+                                  "       'Content-Type': 'application/json',\n"
+                                  "       'Password': '$passwordCurrunt',\n"
+                                  "       'UserName': '$projectNameCurrunt',\n"
+                                  "       'Authorization': 'Bearer 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'\n\n"
+                                  "}"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Header copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "headers = {\n\n"
+                      "       'Content-Type': 'application/json',\n"
+                      "       'Password': '$passwordCurrunt',\n"
+                      "       'UserName': '$projectNameCurrunt',\n"
+                      "       'Authorization': 'Bearer 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'\n\n"
+                      "}",
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 3:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Now you need to know the status code which is used in this API,\n"
+                        "Use this Codes as API call verification",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "STATUS CODES\n\n\n"
+                    "200 : RequestAccepted, Request is valid\n"
+                    "401 : Unauthorized, Username or Password is not valid",
+                    style: TextStyle(
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.amberAccent),
-                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 70,
+            )
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class ConsolePostApiOnProjectPage extends StatelessWidget {
+  const ConsolePostApiOnProjectPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Column(
+          children: [
+            const SizedBox(
+              height: 60,
+            ),
+            Text(
+              "Url of PostApi on Project",
+              style: GoogleFonts.orbitron(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            Container(
+              margin: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30.0)),
+              child: ListTile(
+                title: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text:
+                                  "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/user/$projectNameCurrunt/post"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Link copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/user/$projectNameCurrunt/post",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
                   ),
                 ),
               ),
@@ -1451,17 +1765,33 @@ class ConsoleGetApiDeveloperPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30)),
               child: Column(
                 children: [
-                  Text(
-                    "headers = {\n\n"
-                    "       'Content-Type': 'application/json',\n"
-                    "       'Password': '$passwordCurrunt',\n"
-                    "       'UserName': '$projectNameCurrunt',\n"
-                    "       'Authorization': 'Bearer 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'\n\n"
-                    "}",
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.amberAccent),
+                  GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text: "headers = {\n\n"
+                                  "       'Content-Type': 'application/json',\n"
+                                  "       'Password': '$passwordCurrunt',\n"
+                                  "       'UserName': '$projectNameCurrunt',\n"
+                                  "       'Authorization': 'Bearer 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'\n\n"
+                                  "}"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Header copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "headers = {\n\n"
+                      "       'Content-Type': 'application/json',\n"
+                      "       'Password': '$passwordCurrunt',\n"
+                      "       'UserName': '$projectNameCurrunt',\n"
+                      "       'Authorization': 'Bearer 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'\n\n"
+                      "}",
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
                   ),
                 ],
               ),
@@ -1485,8 +1815,925 @@ class ConsoleGetApiDeveloperPage extends StatelessWidget {
                         height: 30,
                       ),
                       Text(
-                        "Now make Get API request in your code,\n"
-                        "This Url is used to get all chat of project",
+                        "Now make Post API request in your code,\n"
+                        "This Url is used to upload message on API server\n"
+                        "Give body Like this....",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text: "body = {\n\n"
+                                  "       'projectName': '$projectNameCurrunt',\n"
+                                  "       'chatId': '< Dynamic >',\n"
+                                  "       'sendId': '< Dynamic >',\n"
+                                  "       'deleteId': '< Dynamic >',\n"
+                                  "       'time': '< Dynamic >',\n"
+                                  "       'message': '< Dynamic >'\n\n"
+                                  "}"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Body copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "body = {\n\n"
+                      "       'projectName': '$projectNameCurrunt',\n"
+                      "       'chatId': '< Dynamic >',\n"
+                      "       'sendId': '< Dynamic >',\n"
+                      "       'deleteId': '< Dynamic >',\n"
+                      "       'time': '< Dynamic >',\n"
+                      "       'message': '< Dynamic >'\n\n"
+                      "}",
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is ChatId ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "ChatId is common Id number between two people,\n"
+                        "ChatId is the Unique Number which is used to Perform CRUD operations on messages of chatters,\n"
+                        "Make chatId like this while perform PostApi call",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "Person A's phoneNumber : 123456789\n"
+                    "Person A have the phoneNumber of Person B in contacts: 987654321\n\n\n"
+                    "Person B's phoneNumber : 987654321\n"
+                    "Person B have the phoneNumber of Person A in contacts: 123456789\n\n\n"
+                    "Now both have the numbers of each other\n\n\n"
+                    "Now Id of A is : Sum(123456789 + 987654321)\n"
+                    "Now Id of B is : Sum(987654321 + 123456789)\n\n"
+                    "After this you get Id of(A) = Id of(B)\n\n\n"
+                    "Now Find the digit sum of Id of(A) and Id of(B)\n"
+                    "Now ChatId(A) = String(digit sum of Id of(A)) + String(Id of(A))\n"
+                    "Now ChatId(B) = String(digit sum of Id of(B)) + String(Id of(B))\n\n"
+                    "Now you get ChatId = ChatId(A) = ChatId(B)\n\n\n"
+                    "Type of ChatId is String",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amberAccent),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is SendId ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "SendId is nothing but the mobile number of message sender,\n"
+                        "SendId is used to delete all messages of sender,\n"
+                        "Also it is used to identify the sender",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is DeleteId ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "DeleteId is the unique id of the message,\n"
+                        "DeleteId is used to delete specific messages of sender,\n"
+                        "DeleteId should be unique so use milliseconds from epoch in your implementation,\n"
+                        "because milliseconds from epoch is always unique",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is Time ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Time is used to identify the timing of message,\n"
+                        "Time is used to Order the messages in Ascending or Descending Order,\n"
+                        "So give the proper DateTimeCalender object in Time parameter",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is Message ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Message is the text parameter,\n"
+                        "Attach message in this parameter",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 3:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Now you need to know the status code which is used in this API,\n"
+                        "Use this Codes as API call verification",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "STATUS CODES\n\n\n"
+                    "201 : RequestAccepted, Content created on server\n"
+                    "401 : Unauthorized, Username or Password is not valid",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amberAccent),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 70,
+            )
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class ConsolePostApiDeveloperPage extends StatelessWidget {
+  const ConsolePostApiDeveloperPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Column(
+          children: [
+            const SizedBox(
+              height: 60,
+            ),
+            Text(
+              "Url of Developer PostApi",
+              style: GoogleFonts.orbitron(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            Container(
+              margin: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30.0)),
+              child: ListTile(
+                title: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text:
+                                  "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Link copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.cyanAccent)),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "This Api is for developer of project, "
+                          "It is used to add on server from developer side",
+                          style: GoogleFonts.orbitron(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 1:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "First you need to authenticate the API\n"
+                        "So set header parameter of this API in your code like this",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text: "headers = {\n\n"
+                                  "       'Content-Type': 'application/json',\n"
+                                  "       'Password': '$passwordCurrunt',\n"
+                                  "       'UserName': '$projectNameCurrunt',\n"
+                                  "       'Authorization': 'Bearer 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'\n\n"
+                                  "}"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Header copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "headers = {\n\n"
+                      "       'Content-Type': 'application/json',\n"
+                      "       'Password': '$passwordCurrunt',\n"
+                      "       'UserName': '$projectNameCurrunt',\n"
+                      "       'Authorization': 'Bearer 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'\n\n"
+                      "}",
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 2:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Now make Post API request in your code,\n"
+                        "This Url is used to upload message on API server\n"
+                        "Give body Like this....",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text: "body = {\n\n"
+                                  "       'projectName': '$projectNameCurrunt',\n"
+                                  "       'chatId': '< Dynamic >',\n"
+                                  "       'sendId': '< Dynamic >',\n"
+                                  "       'deleteId': '< Dynamic >',\n"
+                                  "       'time': '< Dynamic >',\n"
+                                  "       'message': '< Dynamic >'\n\n"
+                                  "}"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Body copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "body = {\n\n"
+                      "       'projectName': '$projectNameCurrunt',\n"
+                      "       'chatId': '< Dynamic >',\n"
+                      "       'sendId': '< Dynamic >',\n"
+                      "       'deleteId': '< Dynamic >',\n"
+                      "       'time': '< Dynamic >',\n"
+                      "       'message': '< Dynamic >'\n\n"
+                      "}",
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is ChatId ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "ChatId is common Id number between two people,\n"
+                        "ChatId is the Unique Number which is used to Perform CRUD operations on messages of chatters,\n"
+                        "Make chatId like this while perform PostApi call",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "Person A's phoneNumber : 123456789\n"
+                    "Person A have the phoneNumber of Person B in contacts: 987654321\n\n\n"
+                    "Person B's phoneNumber : 987654321\n"
+                    "Person B have the phoneNumber of Person A in contacts: 123456789\n\n\n"
+                    "Now both have the numbers of each other\n\n\n"
+                    "Now Id of A is : Sum(123456789 + 987654321)\n"
+                    "Now Id of B is : Sum(987654321 + 123456789)\n\n"
+                    "After this you get Id of(A) = Id of(B)\n\n\n"
+                    "Now Find the digit sum of Id of(A) and Id of(B)\n"
+                    "Now ChatId(A) = String(digit sum of Id of(A)) + String(Id of(A))\n"
+                    "Now ChatId(B) = String(digit sum of Id of(B)) + String(Id of(B))\n\n"
+                    "Now you get ChatId = ChatId(A) = ChatId(B)\n\n\n"
+                    "Type of ChatId is String",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amberAccent),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is SendId ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "SendId is nothing but the mobile number of message sender,\n"
+                        "SendId is used to delete all messages of sender,\n"
+                        "Also it is used to identify the sender",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is DeleteId ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "DeleteId is the unique id of the message,\n"
+                        "DeleteId is used to delete specific messages of sender,\n"
+                        "DeleteId should be unique so use milliseconds from epoch in your implementation,\n"
+                        "because milliseconds from epoch is always unique",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is Time ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Time is used to identify the timing of message,\n"
+                        "Time is used to Order the messages in Ascending or Descending Order,\n"
+                        "So give the proper DateTimeCalender object in Time parameter",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is Message ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Message is the text parameter,\n"
+                        "Attach message in this parameter",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 3:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Now you need to know the status code which is used in this API,\n"
+                        "Use this Codes as API call verification",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "STATUS CODES\n\n\n"
+                    "201 : RequestAccepted, Content created on server\n"
+                    "401 : Unauthorized, Username or Password is not valid",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amberAccent),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 70,
+            )
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class ConsoleDeleteApiByDeleteIdPage extends StatelessWidget {
+  const ConsoleDeleteApiByDeleteIdPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Column(
+          children: [
+            const SizedBox(
+              height: 60,
+            ),
+            Text(
+              "Url of DeleteApi by DeleteId",
+              style: GoogleFonts.orbitron(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            Container(
+              margin: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30.0)),
+              child: ListTile(
+                title: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text:
+                                  "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/single/delete/<deleteId>"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Link copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/single/delete/<deleteId>",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 1:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "First you need to authenticate the API\n"
+                        "So set header parameter of this API in your code like this",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text: "headers = {\n\n"
+                                  "       'Content-Type': 'application/json',\n"
+                                  "       'Password': '$passwordCurrunt',\n"
+                                  "       'UserName': '$projectNameCurrunt',\n"
+                                  "       'Authorization': 'Bearer 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'\n\n"
+                                  "}"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Header copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "headers = {\n\n"
+                      "       'Content-Type': 'application/json',\n"
+                      "       'Password': '$passwordCurrunt',\n"
+                      "       'UserName': '$projectNameCurrunt',\n"
+                      "       'Authorization': 'Bearer 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'\n\n"
+                      "}",
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 2:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Now make Delete API request in your code,\n"
+                        "This Url is used to delete specific message from sender side\n"
+                        "Now you need to concatenate this API URL with DeleteId\n"
+                        "Like this...",
                         style: GoogleFonts.orbitron(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -1505,9 +2752,9 @@ class ConsoleGetApiDeveloperPage extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    "your ProjectName is $projectNameCurrunt\n\n\n"
-                    "your Project GetUrl is :\n"
-                    "           http://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt",
+                    "Suppose your DeleteId is 16987575847847488465\n\n\n"
+                    "So now your DeleteUrl is :\n"
+                    "           https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/single/delete/16987575847847488465",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontSize: 18,
@@ -1558,7 +2805,838 @@ class ConsoleGetApiDeveloperPage extends StatelessWidget {
                 children: const [
                   Text(
                     "STATUS CODES\n\n\n"
-                    "200 : RequestAccepted, Request is valid\n"
+                    "204 : RequestAccepted, Message deleted, No content\n"
+                    "401 : Unauthorized, Username or Password is not valid",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amberAccent),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is DeleteId ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "DeleteId is the unique id of the message,\n"
+                        "DeleteId is used to delete specific messages of sender,\n"
+                        "DeleteId should be unique so use milliseconds from epoch in your implementation,\n"
+                        "because milliseconds from epoch is always unique",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 70,
+            )
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class ConsoleDeleteApiByChatIdPage extends StatelessWidget {
+  const ConsoleDeleteApiByChatIdPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Column(
+          children: [
+            const SizedBox(
+              height: 60,
+            ),
+            Text(
+              "Url of DeleteApi by ChatId",
+              style: GoogleFonts.orbitron(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            Container(
+              margin: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30.0)),
+              child: ListTile(
+                title: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text:
+                                  "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/multi/chat/<chatId>"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Link copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/multi/chat/<chatId>",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 1:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "First you need to authenticate the API\n"
+                        "So set header parameter of this API in your code like this",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text: "headers = {\n\n"
+                                  "       'Content-Type': 'application/json',\n"
+                                  "       'Password': '$passwordCurrunt',\n"
+                                  "       'UserName': '$projectNameCurrunt',\n"
+                                  "       'Authorization': 'Bearer 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'\n\n"
+                                  "}"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Header copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "headers = {\n\n"
+                      "       'Content-Type': 'application/json',\n"
+                      "       'Password': '$passwordCurrunt',\n"
+                      "       'UserName': '$projectNameCurrunt',\n"
+                      "       'Authorization': 'Bearer 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'\n\n"
+                      "}",
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 2:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Now make Delete API request in your code,\n"
+                        "This Url is used to delete all message between two people\n"
+                        "Now you need to concatenate this API URL with ChatId\n"
+                        "Like this...",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                children: [
+                  Text(
+                    "Suppose your ChatId is 87646463864365\n\n\n"
+                    "So now your DeleteUrl is :\n"
+                    "           https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/multi/chat/87646463864365",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amberAccent),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 3:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Now you need to know the status code which is used in this API,\n"
+                        "Use this Codes as API call verification",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "STATUS CODES\n\n\n"
+                    "204 : RequestAccepted, Message deleted, No content\n"
+                    "401 : Unauthorized, Username or Password is not valid",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amberAccent),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is ChatId ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "ChatId is common Id number between two people,\n"
+                        "ChatId is the Unique Number which is used to Perform CRUD operations on messages of chatters,\n"
+                        "Make chatId like this while perform PostApi call",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "Person A's phoneNumber : 123456789\n"
+                    "Person A have the phoneNumber of Person B in contacts: 987654321\n\n\n"
+                    "Person B's phoneNumber : 987654321\n"
+                    "Person B have the phoneNumber of Person A in contacts: 123456789\n\n\n"
+                    "Now both have the numbers of each other\n\n\n"
+                    "Now Id of A is : Sum(123456789 + 987654321)\n"
+                    "Now Id of B is : Sum(987654321 + 123456789)\n\n"
+                    "After this you get Id of(A) = Id of(B)\n\n\n"
+                    "Now Find the digit sum of Id of(A) and Id of(B)\n"
+                    "Now ChatId(A) = String(digit sum of Id of(A)) + String(Id of(A))\n"
+                    "Now ChatId(B) = String(digit sum of Id of(B)) + String(Id of(B))\n\n"
+                    "Now you get ChatId = ChatId(A) = ChatId(B)\n\n\n"
+                    "Type of ChatId is String",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amberAccent),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 70,
+            )
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class ConsoleDeleteApiBySendIdPage extends StatelessWidget {
+  const ConsoleDeleteApiBySendIdPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Column(
+          children: [
+            const SizedBox(
+              height: 60,
+            ),
+            Text(
+              "Url of DeleteApi by SendId",
+              style: GoogleFonts.orbitron(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            Container(
+              margin: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30.0)),
+              child: ListTile(
+                title: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text:
+                                  "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/multi/send/<sendId>"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Link copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/multi/send/<sendId>",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 1:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "First you need to authenticate the API\n"
+                        "So set header parameter of this API in your code like this",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text: "headers = {\n\n"
+                                  "       'Content-Type': 'application/json',\n"
+                                  "       'Password': '$passwordCurrunt',\n"
+                                  "       'UserName': '$projectNameCurrunt',\n"
+                                  "       'Authorization': 'Bearer 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'\n\n"
+                                  "}"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Header copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "headers = {\n\n"
+                      "       'Content-Type': 'application/json',\n"
+                      "       'Password': '$passwordCurrunt',\n"
+                      "       'UserName': '$projectNameCurrunt',\n"
+                      "       'Authorization': 'Bearer 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'\n\n"
+                      "}",
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 2:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Now make Delete API request in your code,\n"
+                        "This Url is used to delete all messages of sender\n"
+                        "Now you need to concatenate this API URL with SendId\n"
+                        "Like this...",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                children: [
+                  Text(
+                    "Suppose your SendId is 9228373734343\n\n\n"
+                    "So now your DeleteUrl is :\n"
+                    "           https://hyphen-v7.onrender.com/org.roundrobin/hyphen/$projectNameCurrunt/user/multi/send/9228373734343",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amberAccent),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 3:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Now you need to know the status code which is used in this API,\n"
+                        "Use this Codes as API call verification",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "STATUS CODES\n\n\n"
+                    "204 : RequestAccepted, Message deleted, No content\n"
+                    "401 : Unauthorized, Username or Password is not valid",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amberAccent),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "What is SendId ?",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "SendId is nothing but the mobile number of message sender,\n"
+                        "SendId is used to delete all messages of sender,\n"
+                        "Also it is used to identify the sender",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 70,
+            )
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class ConsoleDeleteApiDeveloperPage extends StatelessWidget {
+  const ConsoleDeleteApiDeveloperPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Column(
+          children: [
+            const SizedBox(
+              height: 60,
+            ),
+            Text(
+              "Url of DeleteApi by SendId",
+              style: GoogleFonts.orbitron(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            Container(
+              margin: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30.0)),
+              child: ListTile(
+                title: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text:
+                                  "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Link copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "https://hyphen-v7.onrender.com/org.roundrobin/hyphen/dev/$projectNameCurrunt",
+                      style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.cyanAccent)),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "This Api is for developer of project, "
+                          "It is used to delete all data from project",
+                          style: GoogleFonts.orbitron(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 1:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "First you need to authenticate the API\n"
+                        "So set header parameter of this API in your code like this",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(
+                              text: "headers = {\n\n"
+                                  "       'Content-Type': 'application/json',\n"
+                                  "       'Password': '$passwordCurrunt',\n"
+                                  "       'UserName': '$projectNameCurrunt',\n"
+                                  "       'Authorization': 'Bearer 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'\n\n"
+                                  "}"))
+                          .then((value) => MotionToast.success(
+                                  title: const Text("Success"),
+                                  description:
+                                      const Text("Header copied on clipboard"))
+                              .show(context));
+                    },
+                    child: Text(
+                      "headers = {\n\n"
+                      "       'Content-Type': 'application/json',\n"
+                      "       'Password': '$passwordCurrunt',\n"
+                      "       'UserName': '$projectNameCurrunt',\n"
+                      "       'Authorization': 'Bearer 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'\n\n"
+                      "}",
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 2:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Now make Delete API request in your code,\n"
+                        "This Url is used to delete all messages of project",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Step 3:",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Now you need to know the status code which is used in this API,\n"
+                        "Use this Codes as API call verification",
+                        style: GoogleFonts.orbitron(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amberAccent),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "STATUS CODES\n\n\n"
+                    "204 : RequestAccepted, Message deleted, No content\n"
                     "401 : Unauthorized, Username or Password is not valid",
                     style: TextStyle(
                         fontSize: 18,

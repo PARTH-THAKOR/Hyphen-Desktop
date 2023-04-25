@@ -44,9 +44,9 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("images/ee.jpg"), fit: BoxFit.cover)),
+                image: AssetImage("images/ee.png"), fit: BoxFit.cover)),
         child: Container(
-          color: Colors.black.withOpacity(0.5),
+          color: Colors.transparent,
           child: Center(
             child: DefaultTextStyle(
               style: const TextStyle(
@@ -57,13 +57,13 @@ class _SplashScreenState extends State<SplashScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(top: 130),
+                      margin: const EdgeInsets.only(top: 370),
                       child: AnimatedTextKit(
                         animatedTexts: [
-                          FadeAnimatedText(' HYPHEN',
+                          FadeAnimatedText(' developers.roundrobin',
                               textStyle: GoogleFonts.orbitron(
-                                fontSize: 70,
-                                color: Colors.white,
+                                fontSize: 25,
+                                color: Colors.black,
                                 fontWeight: FontWeight.bold,
                               )),
                         ],
@@ -83,20 +83,6 @@ class _SplashScreenState extends State<SplashScreen> {
                         },
                       ),
                     ),
-                    Container(
-                        padding: const EdgeInsets.all(12),
-                        margin: const EdgeInsets.only(top: 20),
-                        child: AnimatedTextKit(
-                          animatedTexts: [
-                            FadeAnimatedText('   developers.roundrobin',
-                                textStyle: GoogleFonts.orbitron(
-                                  fontSize: 25,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                          ],
-                          totalRepeatCount: 2,
-                        )),
                   ]),
             ),
           ),
